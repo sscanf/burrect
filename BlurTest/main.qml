@@ -4,7 +4,7 @@ import com.zitro.zone.qmlcomponents 1.0
 
 Window {
     visible: true
-    width  : 1540
+    width  : 1680
     height : 1050
     title  : qsTr("Hello World")
 
@@ -19,8 +19,8 @@ Window {
         id    : blur
         x     : 0
         y     : 0
-        width : 110
-        height: 110
+        width : 310
+        height: 310
         z     : 10
 
         Text {

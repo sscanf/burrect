@@ -108,12 +108,12 @@ void blur::screenShot()
 {
     if (m_image.size().isEmpty()) {
         QQuickWindow *window = this->window();
-        QImage image = window->grabWindow();
-        m_image = blurred (image,QRect (0,0,window->width(),window->height()),30,false);
-        m_image.save ("/tmp/oscar.jpg");
-        qDebug() << this->x() << this->y() << this->width() << this->height();
+        m_image = window->grabWindow();
     }
-    m_sImage  = m_image.copy (this->x(),this->y(),this->width(),this->height());
+    qDebug() << this->x() << this->y() << this->width() << this->height();
+    QImage image = blurred (m_image,QRect (this->x(),this->y(),this->width(),this->height()),30,false);
+    m_sImage = image.copy (this->x(),this->y(),this->width(),this->height());
+//    m_sImage.save ("/tmp/oscar.jpg");
     this->update();
 }
 
