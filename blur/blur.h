@@ -14,12 +14,11 @@ class blur : public QQuickItem
 public:
     blur(QQuickItem *parent = nullptr);
     ~blur();
-    Q_INVOKABLE void screenShot();
     QSGNode *updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *);
 
 private:
     QImage blurred(const QImage& image, const QRectF &rect, int radius, bool alphaOnly);
-    void geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry);
+//    void geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry);
 
 private:
     QQuickView *m_pCurrentView;
@@ -29,6 +28,7 @@ private:
 
 public slots:
     void on_windowChanged(QQuickWindow *);
+    void screenShot();
 };
 
 #endif // BLUR_H

@@ -2,6 +2,7 @@
 #include <QSGSimpleTextureNode>
 #include <QSGTexture>
 #include <QDebug>
+#include <QQuickWindow>
 
 blur::blur(QQuickItem *parent):
     QQuickItem(parent)
@@ -82,16 +83,17 @@ QImage blur::blurred(const QImage& image, const QRectF& rect, int radius, bool  
     return result;
 }
 
+/*
 void blur::geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry)
 {
     m_sImage  = m_image.copy (newGeometry.x(), newGeometry.y(), newGeometry.width(), newGeometry.height());
-    qDebug() << newGeometry.x() << newGeometry.y() << newGeometry.width() << newGeometry.height();
     update();
 }
-
+*/
 void blur::on_windowChanged(QQuickWindow *pWindow)
 {
     if (pWindow) {
+        connect (window(), SIGNAL (frameSwapped()), this, SLOT (screenShot()),Qt::QueuedConnection);
         m_sImage = QImage (pWindow->size(), QImage::Format_ARGB32);
         m_sImage.fill (Qt::transparent);
     }
@@ -103,9 +105,11 @@ blur::~blur()
 
 void blur::screenShot()
 {
-    QImage image = window()->grabWindow();
-    m_image = blurred (image,QRect (0,0,window()->width(),window()->height()),30,false);
-    m_image.save ("/tmp/oscar.jpg");
+
+    QQuickWindow *window = this->window();
+    QImage image = window->grabWindow();
+    m_image = blurred (image,QRect (0,0,window->width(),window->height()),30,false);
+//    m_image.save ("/tmp/oscar.jpg");
     m_sImage  = m_image.copy (this->x(),this->y(),this->width(),this->height());
     this->update();
 }
@@ -113,7 +117,6 @@ void blur::screenShot()
 QSGNode *blur::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeData *)
 {
     QSGSimpleTextureNode *node = static_cast<QSGSimpleTextureNode *>(oldNode);
-    qDebug() << node;
     if (!node) {
         node = new QSGSimpleTextureNode();
     }
