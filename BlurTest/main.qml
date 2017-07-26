@@ -4,8 +4,8 @@ import com.zitro.zone.qmlcomponents 1.0
 
 Window {
     visible: true
-    width  : 340
-    height : 480
+    width  : 1540
+    height : 1050
     title  : qsTr("Hello World")
 
     Image {
@@ -17,17 +17,18 @@ Window {
 
     Blur {
         id    : blur
-        x     : 32
-        y     : 119
-        width : 185
-        height: 216
+        x     : 0
+        y     : 0
+        width : 110
+        height: 110
         z     : 10
 
         Text {
             anchors.centerIn: parent
             color: "white"
             text: qsTr("Drag Me!")
-            font.pixelSize: 12
+            font.pixelSize: 24
+            font.bold: true
         }
 
         MouseArea{

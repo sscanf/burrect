@@ -5,7 +5,9 @@
 #include <QQuickWindow>
 
 blur::blur(QQuickItem *parent):
-    QQuickItem(parent)
+    QQuickItem(parent),
+    m_image(0),
+    m_sImage(0)
 {
     // By default, QQuickItem does not draw anything. If you subclass
     // QQuickItem to create a visual item, you will need to uncomment the
@@ -83,19 +85,18 @@ QImage blur::blurred(const QImage& image, const QRectF& rect, int radius, bool  
     return result;
 }
 
-/*
-void blur::geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry)
-{
-    m_sImage  = m_image.copy (newGeometry.x(), newGeometry.y(), newGeometry.width(), newGeometry.height());
-    update();
-}
-*/
+
+//void blur::geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry)
+//{
+//}
+
 void blur::on_windowChanged(QQuickWindow *pWindow)
 {
     if (pWindow) {
         connect (window(), SIGNAL (frameSwapped()), this, SLOT (screenShot()),Qt::QueuedConnection);
         m_sImage = QImage (pWindow->size(), QImage::Format_ARGB32);
         m_sImage.fill (Qt::transparent);
+        update();
     }
 }
 
@@ -105,11 +106,13 @@ blur::~blur()
 
 void blur::screenShot()
 {
-
-    QQuickWindow *window = this->window();
-    QImage image = window->grabWindow();
-    m_image = blurred (image,QRect (0,0,window->width(),window->height()),30,false);
-//    m_image.save ("/tmp/oscar.jpg");
+    if (m_image.size().isEmpty()) {
+        QQuickWindow *window = this->window();
+        QImage image = window->grabWindow();
+        m_image = blurred (image,QRect (0,0,window->width(),window->height()),30,false);
+        m_image.save ("/tmp/oscar.jpg");
+        qDebug() << this->x() << this->y() << this->width() << this->height();
+    }
     m_sImage  = m_image.copy (this->x(),this->y(),this->width(),this->height());
     this->update();
 }
