@@ -2,6 +2,6 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>MainForm.ui.qml</file>
-        <file>oscar.jpg</file>
+        <file>pasiaje.jpg</file>
     </qresource>
 </RCC>

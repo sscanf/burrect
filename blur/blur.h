@@ -16,6 +16,7 @@ public:
     ~blur();
     QSGNode *updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *);
 
+
 private:
     QImage blurred(const QImage& image, const QRectF &rect, int radius, bool alphaOnly);
 //    void geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry);

@@ -36,6 +36,7 @@ QImage blur::blurred(const QImage& image, const QRectF& rect, int radius, bool  
     int i2 = 3;
 
     if (alphaOnly)
+
     i1 = i2 = (QSysInfo::ByteOrder == QSysInfo::BigEndian ? 0 : 3);
 
     for (int col = c1; col <= c2; col++) {
@@ -85,7 +86,6 @@ QImage blur::blurred(const QImage& image, const QRectF& rect, int radius, bool  
     return result;
 }
 
-
 //void blur::geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry)
 //{
 //}
@@ -109,11 +109,27 @@ void blur::screenShot()
     if (m_image.size().isEmpty()) {
         QQuickWindow *window = this->window();
         m_image = window->grabWindow();
+//        QImage image = blurred (m_image,QRect (this->x(),this->y(),this->width(),this->height()),30,false);
+    } else {
+        qreal x=this->x();
+        qreal y=this->y();
+        qreal width = this->width();
+        qreal height= this->height();
+        if (x<0) {
+            width+=x;
+            if (width<0) width=0;
+            x=0;
+        }
+        if (y<0) {
+            height+=y;
+            if (height<0) height=0;
+            y=0;
+        }
+
+        QImage image = blurred (m_image,QRect (x,y,width,height),30,false);
+        m_sImage = image.copy (this->x(),this->y(),this->width(),this->height());
+        //m_sImage.save ("/tmp/oscar.jpg");
     }
-    qDebug() << this->x() << this->y() << this->width() << this->height();
-    QImage image = blurred (m_image,QRect (this->x(),this->y(),this->width(),this->height()),30,false);
-    m_sImage = image.copy (this->x(),this->y(),this->width(),this->height());
-//    m_sImage.save ("/tmp/oscar.jpg");
     this->update();
 }
 
